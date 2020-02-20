@@ -11,5 +11,5 @@
 	<createSlaveProjects value=""/>
 	<templateProperties value="id=com.ti.common.project.core.emptyProjectTemplate,"/>
 	<isTargetManual value="false"/>
-	<origin value="C:/Users/a0226004/Downloads/DRV8350_FW_Trap_0828/DRV8350_FW_Trap_0828/DRV83xx_MSP430F5529_Trapezoidal_Sensored_BLDC"/>
+	<origin value="C:/Users/beringer.o/Documents/NEU/capstone/eece_capstone/DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC"/>
 </projectOptions>

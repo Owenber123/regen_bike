@@ -22,6 +22,8 @@ void sensoredTrapController_Init(void); /* initialize sensored Trapezoidal motor
 void drv83xx_Register_Read(void);
 void drv83xx_Register_Init(void);
 void drv83xx_Register_Write(void);
-void HostControllerInit(void);
-void TIMER_SPD_Init(void);     /* Initialize timer to read the electrical speed of the motor */
-void PWM_Init(void); /* Initialize PWM pins for multiple PWM modes */
+void HostControllerInit(void);  // Initialize Host Controller
+void BikeControllerInit(void);  // Initialize Bike Controller
+void TIMER_SPD_Init(void);      /* Initialize timer to read the electrical speed of the motor */
+void PWM_Init(void);            /* Initialize PWM pins for multiple PWM modes */
+void UART_Init(void);           // Initialize UART

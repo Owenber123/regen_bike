@@ -12,6 +12,7 @@
 // Controller
 extern SENSORED_TRAP_Obj sensoredTrapController;
 extern APPLICATION_STATUS applicationStatus;
+extern BIKE_CONTROLLER bikeController;
 
 // Host Controller
 extern HOST_CONTROLLER_Obj HostController;
@@ -561,9 +562,25 @@ __interrupt void COMP_B_ISR(void)
 {
 }
 
+// UART Interrupt Service Routine for Arduino Communication
 #pragma vector = USCI_A0_VECTOR
 __interrupt void USCIA_ISR(void)
 {
+    switch ( UCA0IV )
+    {
+        case 2:
+            /*
+             * Handle RX interrupt
+             */
+            //handleRX();
+            break;
+        case 4:
+            /*
+             * Handle TX interrupt
+             */
+            //handleTX();
+            break;
+    }
 }
 
 #pragma vector = USCI_B0_VECTOR

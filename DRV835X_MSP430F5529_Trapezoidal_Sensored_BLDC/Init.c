@@ -8,9 +8,11 @@
 
 #include "global.h"
 
+
 // Controller
 extern SENSORED_TRAP_Obj sensoredTrapController;
 extern APPLICATION_STATUS applicationStatus;
+extern BIKE_CONTROLLER bikeController;
 
 // Host Controller
 extern HOST_CONTROLLER_Obj HostController;
@@ -26,8 +28,6 @@ extern OCP_CTRL_REG5_Obj OCP_Control_Reg;
 extern CSA_CTRL_REG6_Obj CSA_Control_Reg;
 extern DRV_CONFIG_REG7_Obj DRV_Config_Reg;
 extern REG_MAP_Obj Reg_Map_Cache;
-
-void UART_Init(void);
 
 /* function
  * Application_Init()
@@ -55,11 +55,11 @@ void Application_Init()
     {
     	sensoredTrapController.DeviceVariant = DRV835X_DEVICE;      //  DRV835x device family
 
-        SensorlessTrapController.IdriveP_Setting = 3;
-
-        SensorlessTrapController.IdriveN_Setting = 3;
-
-        SensorlessTrapController.Tdrive_Setting = 4;
+//        SensorlessTrapController.IdriveP_Setting = 3;
+//
+//        SensorlessTrapController.IdriveN_Setting = 3;
+//
+//        SensorlessTrapController.Tdrive_Setting = 4;
     }
     else
     {
@@ -155,7 +155,7 @@ void Application_Init()
     #ifdef MDBUSERIAL_USE_USB
       USB_setup(TRUE,TRUE);       /* MDBU Serial Protocol over USB */
     #else
-      UART_Init();                /* MDBU Serial Protocol over UART */
+      UART1_Init();                /* MDBU Serial Protocol over UART */
     #endif
 
     /* Gate Drive Enable using Port 1.6 */
@@ -353,10 +353,10 @@ void GPIO_Init(void)
 }
 
 /*function
- * UART_Init()
+ * UART1_Init()
  * Initializes UART for host interface.
  * */
-void UART_Init(void)
+void UART1_Init(void)
 {
 	UCA1CTL1 |= UCSWRST;                      // **Put state machine in reset**
 	UCA1CTL1 |= UCSSEL_2;                     // SMCLK
@@ -366,6 +366,23 @@ void UART_Init(void)
 	UCA1CTL1 &= ~UCSWRST;                     // **Initialize USCI state machine**
 	UCA1IE |= UCRXIE;                         // Enable USCI_A1 RX interrupt
 }
+
+/*function
+ * UART0_Init()
+ * Initializes UART for host interface.
+ * */
+void UART0_Init(void)
+{
+    UCA0CTL1 |= UCSWRST;                      // **Put state machine in reset**
+    UCA0CTL1 |= UCSSEL_2;                     // SMCLK
+    UCA0BR0 = 162 ;                           // 25MHz - 9600 Baud 25M/9600= 2604.1667 , 2604.1667/16 = 162.76 , 0.76 *16 = 12.16
+    UCA0BR1 = 0;
+    UCA0MCTL = UCBRS_0 + UCBRF_12 + UCOS16;   // Modln UCBRSx=0, UCBRFx=12,
+    UCA0CTL1 &= ~UCSWRST;                     // **Initialize USCI state machine**
+    UCA0IE |= UCRXIE;                         // Enable USCI_A0 RX interrupt
+}
+
+
 /*function
  * PWM_Init()
  * Initializes PWM pins for different PWM modes.
@@ -815,4 +832,24 @@ void HostControllerInit(void)
 	HostController.StartStopMotor = 0x01;
 
 	HostControl_Status = HOST_IDLE;
+}
+
+void BikeControllerInit(void)
+{
+    // Attempt at using usci_a_uart.c provided by TI
+    /*uint16_t addy = 0x5C0h;
+    USCI_A_UART_initParam *params;
+    params->clockPrescalar = 162;
+    params->firstModReg = 12;
+    params->secondModReg = 0;
+    params->selectClockSource = USCI_A_UART_CLOCKSOURCE_SMCLK;
+    params->overSampling = USCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION;
+
+    USCI_A_UART_init(addy, params);*/
+
+    bikeController.idling = 1;
+    bikeController.accelerating = 0;
+    bikeController.regenerating = 0;
+    bikeController.speed = 0;
+    bikeController.regen_level = 0;
 }

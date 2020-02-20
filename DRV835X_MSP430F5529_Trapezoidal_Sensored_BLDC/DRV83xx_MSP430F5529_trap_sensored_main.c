@@ -8,10 +8,18 @@
 
 #include "global.h"
 #include "mdbu_global.h"
+#include "stdio.h"
 
 // Controller
 SENSORED_TRAP_Obj sensoredTrapController;
 APPLICATION_STATUS applicationStatus;
+
+//E-Bike
+BIKE_CONTROLLER bikeController;
+BIKE_STATUS Bike_Status;
+
+// Tracking cmds sent by host
+uint8_t CMDS[100];
 
 // Host Controller
 HOSTCONTROL_STATUS HostControl_Status;
@@ -336,6 +344,47 @@ void DRV8x_StateMachine(void)
     }
 }
 
+
+/*function
+ * BikeController_StateMachine(void)
+ * Handles the Bike state machine
+ * */
+BikeController_StateMachine(void)
+{
+    switch(Bike_Status)
+    {
+        case SYSTEM_INIT:
+            // Wait for Everything to be fully booted up before allowing a change in state
+            // ex. 4D Systems display
+            Bike_Status = BIKE_IDLE;
+            break;
+        case SYSTEM_IDLE:
+            // When the throttle is not being pulled and speed is 0 neither regeneration or acceleration will occur
+            // Wait for interrupts
+            //delay(5000);
+            Bike_Status = ACCELERATING;
+            break;
+        case ACCELERATING:
+            // Set Mode to 1 PWM
+            // Set Speed
+            //
+            //drv83xx_regRestoreFromCache();
+            ReadPotiSpeed();
+            drv83xx_setGPIO(0x01, EN_DRV, 1);
+            HostController.EnabledGateDrivers = 1;
+            HostController.StartStopMotor = 0;
+            //sensoredTrapController.TargetDutyCycle = 500;
+            //drv83xx_StartMotor();
+            //Bike_Status = BIKE_INIT;
+            break;
+        case REGENERATING:
+            // Set Mode to 6 PWM
+            Bike_Status = BIKE_IDLE;
+            break;
+    }
+
+}
+
 /*function
  * HostController_StateMachine(void)
  * Handles the HOST state machine
@@ -401,7 +450,13 @@ void HostController_StateMachine(void)
 				{
 					if(mdbuserial_callbacktable[i].cmd == cmd)
 					{
+					    //printf("%X\n",cmd);
 						mdbuserial_callbacktable[i].callback(data, (size_t)(length));
+						for(j = 0; j < 99; j++)
+						{
+						    CMDS[j + 1] = CMDS[j];
+						}
+						CMDS[j] = cmd;
 					}
 				}
 				if(HostController.EnabledGateDrivers == 0)
@@ -420,13 +475,16 @@ void HostController_StateMachine(void)
  * */
 void main()
 {
-    Application_Init();                     												 /* Initialize application state machine states*/
-    mdbuSerial_init(); 					// Initialise MDBU Serial Protocol
-    HostControllerInit();				// Initialise Host Controller
+    Application_Init();                 /* Initialize application state machine states*/
+    mdbuSerial_init(); 					// Initialize MDBU Serial Protocol
+    HostControllerInit();				// Initialize Host Controller
+    BikeControllerInit();               // Initialize Bike Controller
+    Bike_Status = BIKE_INIT;          // Initialize State
 
     while(1)
     {
         DRV8x_StateMachine();                       										 /* call background state machine */
+        BikeController_StateMachine();
         HostController_StateMachine();
     }
 }

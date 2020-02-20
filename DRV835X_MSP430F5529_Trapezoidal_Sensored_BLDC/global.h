@@ -20,6 +20,7 @@
 #include "USB_config/descriptors.h"
 #include "USB_app/usbConstructs.h"
 #include "mdbuserial.h"
+#include "usci_a_uart.h"
 
 // Motor Parameter Numbers
 #define MTR_PARAM_DIR	(14)
@@ -135,12 +136,30 @@ typedef enum
 
 } FAULTS;
 
+typedef enum
+{
+    BIKE_INIT = 0,
+    BIKE_IDLE = 1,
+    ACCELERATING = 2,
+    REGENERATING = 3
+}BIKE_STATUS;
+
 typedef struct APPLICATION_STATUS
 {
     STATE_MACHINE currentstate;
     STATE_MACHINE previousstate;
     FAULTS fault;
 } APPLICATION_STATUS;
+
+typedef struct BIKE_CONTROLLER
+{
+    uint8_t accelerating;       // 1 = enabled, 0 = disabled
+    uint8_t regenerating;       // 1 = enabled, 0 = disabled
+    uint8_t idling;             // 1 = enabled, 0 = disabled
+    uint8_t speed;              // Controlled by throttle
+    uint8_t regen_level;        // Controlled by brake signal or buttons
+
+}BIKE_CONTROLLER;
 
 typedef struct SENSORED_TRAP_Obj
 {
