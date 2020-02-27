@@ -354,32 +354,38 @@ BikeController_StateMachine(void)
     switch(Bike_Status)
     {
         case SYSTEM_INIT:
-            // Wait for Everything to be fully booted up before allowing a change in state
-            // ex. 4D Systems display
-            Bike_Status = BIKE_IDLE;
+	    bike_init();			// Initialize UART/THROTTLE/BREAK
+            Bike_Status.current = BIKE_IDLE;		// Move to next state
+	    Bike_Status.previous = SYSTEM_INIT;
             break;
         case SYSTEM_IDLE:
-            // When the throttle is not being pulled and speed is 0 neither regeneration or acceleration will occur
-            // Wait for interrupts
-            //delay(5000);
-            Bike_Status = ACCELERATING;
+            // This state should be used to save power.  If the bike is in idle we are waiting for an interrupt
+	    // Because Bike_Status cannot be set in an interrupt we must check if an interrupt has occured
+	    if (1) // ("break interrupt" or "throttle interrupt")
+		Bike_Status.previous = SYSTEM_IDLE;
+	    	Bike_Status.current = ACCELERATING;
             break;
+	case SWITCHING:
+	    // Precautions must be taken during the switching between accelerating and regenerating.
+	    // Must deactive gates and ...
+	    if (Bike_Status.previous == ACCELERATING)
+		Bike_Status.current = REGENERATING;
+	    Bike_Status.previous = SWITCHING;
+	    break;
         case ACCELERATING:
-            // Set Mode to 1 PWM
-            // Set Speed
-            //
-            //drv83xx_regRestoreFromCache();
+            // ????  drv83xx_regRestoreFromCache();
             ReadPotiSpeed();
-            drv83xx_setGPIO(0x01, EN_DRV, 1);
-            HostController.EnabledGateDrivers = 1;
-            HostController.StartStopMotor = 0;
-            //sensoredTrapController.TargetDutyCycle = 500;
-            //drv83xx_StartMotor();
-            //Bike_Status = BIKE_INIT;
+	    // update_speed();
+	    if (0) // ("break interrupt")
+		Bike_Status.previous = ACCELERATING;
+		Bike_Status.current = SWITCHING;
             break;
         case REGENERATING:
             // Set Mode to 6 PWM
             Bike_Status = BIKE_IDLE;
+	    if (0) // ("throttle interrupt"
+		Bike_Status.previous = REGENERATING;
+		Bike_Status.current = SWITCHING;
             break;
     }
 
@@ -475,16 +481,16 @@ void HostController_StateMachine(void)
  * */
 void main()
 {
-    Application_Init();                 /* Initialize application state machine states*/
-    mdbuSerial_init(); 					// Initialize MDBU Serial Protocol
-    HostControllerInit();				// Initialize Host Controller
-    BikeControllerInit();               // Initialize Bike Controller
-    Bike_Status = BIKE_INIT;          // Initialize State
-
+    Application_Init();                 	/* Initialize application state machine states*/
+    mdbuSerial_init(); 				// Initialize MDBU Serial Protocol
+    HostControllerInit();			// Initialize Host Controller
+    BikeControllerInit();               	// Initialize Bike Controller
+    Bike_Status.current = BIKE_INIT;          	// Initialize State
+    Bike_Status.previous = BIKE_INIT;		// Set previous bike status to be safe
     while(1)
     {
-        DRV8x_StateMachine();                       										 /* call background state machine */
+        DRV8x_StateMachine();                       	 /* call background state machine */
         BikeController_StateMachine();
-        HostController_StateMachine();
+        // HostController_StateMachine();
     }
 }

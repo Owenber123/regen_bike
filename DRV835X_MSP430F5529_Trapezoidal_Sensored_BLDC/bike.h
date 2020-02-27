@@ -1,16 +1,13 @@
 #include "global.h"
 
+#define USCI_A0_OFFSET 0x05C0h
 
 
-// UART Initializer
-struct USCI_A_UART_initParam ebike;
+// Initialize Bike for use
+void bike_init(void);
 
+// Update the Speed of the driver based on the throttle input pin
+void update_speed(void);
 
-
-void initialize_bike(void)
-{
-    drv83xx_setGPIO(0x01, EN_DRV, 1);
-    HostController.StartStopMotor = 0;
-    HostController.EnabledGateDrivers = 1;
-
-}
+// Send Parameters to Arduino on handlebar
+void send_handle_bar(void); 

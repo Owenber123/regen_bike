@@ -373,6 +373,7 @@ void UART1_Init(void)
  * */
 void UART0_Init(void)
 {
+/*
     UCA0CTL1 |= UCSWRST;                      // **Put state machine in reset**
     UCA0CTL1 |= UCSSEL_2;                     // SMCLK
     UCA0BR0 = 162 ;                           // 25MHz - 9600 Baud 25M/9600= 2604.1667 , 2604.1667/16 = 162.76 , 0.76 *16 = 12.16
@@ -380,6 +381,16 @@ void UART0_Init(void)
     UCA0MCTL = UCBRS_0 + UCBRF_12 + UCOS16;   // Modln UCBRSx=0, UCBRFx=12,
     UCA0CTL1 &= ~UCSWRST;                     // **Initialize USCI state machine**
     UCA0IE |= UCRXIE;                         // Enable USCI_A0 RX interrupt
+*/
+
+    USCI_A_UART_initParam *params;
+    params->clockPrescalar = 162;
+    params->firstModReg = 12;
+    params->secondModReg = 0;
+    params->selectClockSource = USCI_A_UART_CLOCKSOURCE_SMCLK;
+    params->overSampling = USCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION;
+
+    USCI_A_UART_init(USCI_A0_OFFSET, params);
 }
 
 
@@ -836,16 +847,8 @@ void HostControllerInit(void)
 
 void BikeControllerInit(void)
 {
-    // Attempt at using usci_a_uart.c provided by TI
-    /*uint16_t addy = 0x5C0h;
-    USCI_A_UART_initParam *params;
-    params->clockPrescalar = 162;
-    params->firstModReg = 12;
-    params->secondModReg = 0;
-    params->selectClockSource = USCI_A_UART_CLOCKSOURCE_SMCLK;
-    params->overSampling = USCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION;
-
-    USCI_A_UART_init(addy, params);*/
+    // Initialize UART
+    UART0_Init();
 
     bikeController.idling = 1;
     bikeController.accelerating = 0;

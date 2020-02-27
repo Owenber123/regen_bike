@@ -21,6 +21,7 @@
 #include "USB_app/usbConstructs.h"
 #include "mdbuserial.h"
 #include "usci_a_uart.h"
+#include "bike.h"
 
 // Motor Parameter Numbers
 #define MTR_PARAM_DIR	(14)
@@ -136,13 +137,20 @@ typedef enum
 
 } FAULTS;
 
+typedef struct BIKE_STATUS
+{
+    BIKE_STATE current;
+    BIKE_STATE previous;
+} BIKE_STATUS;
+
 typedef enum
 {
     BIKE_INIT = 0,
     BIKE_IDLE = 1,
-    ACCELERATING = 2,
-    REGENERATING = 3
-}BIKE_STATUS;
+    SWITCHING = 2,
+    ACCELERATING = 3,
+    REGENERATING = 4
+} BIKE_STATE;
 
 typedef struct APPLICATION_STATUS
 {
