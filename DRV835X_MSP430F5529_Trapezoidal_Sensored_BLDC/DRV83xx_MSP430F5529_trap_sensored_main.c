@@ -365,7 +365,7 @@ BikeController_StateMachine(void)
 		Bike_Status.previous = SYSTEM_IDLE;
 	    	Bike_Status.current = ACCELERATING;
             break;
-	case SWITCHING:
+        case SWITCHING:
 	    // Precautions must be taken during the switching between accelerating and regenerating.
 	    // Must deactive gates and ...
 	    if (Bike_Status.previous == ACCELERATING)
@@ -377,7 +377,7 @@ BikeController_StateMachine(void)
             ReadPotiSpeed();
 	    // update_speed();
 	    if (0) // ("break interrupt")
-		Bike_Status.previous = ACCELERATING;
+		//Bike_Status.previous = ACCELERATING;
 		Bike_Status.current = SWITCHING;
             break;
         case REGENERATING:
