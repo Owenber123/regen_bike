@@ -351,7 +351,7 @@ void DRV8x_StateMachine(void)
  * */
 BikeController_StateMachine(void)
 {
-    switch(Bike_Status)
+    switch(Bike_Status.current)
     {
         case SYSTEM_INIT:
 	    bike_init();			// Initialize UART/THROTTLE/BREAK
@@ -382,7 +382,7 @@ BikeController_StateMachine(void)
             break;
         case REGENERATING:
             // Set Mode to 6 PWM
-            Bike_Status = BIKE_IDLE;
+            //Bike_Status = BIKE_IDLE;
 	    if (0) // ("throttle interrupt"
 		Bike_Status.previous = REGENERATING;
 		Bike_Status.current = SWITCHING;

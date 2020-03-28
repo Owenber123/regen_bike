@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := C:/ti/ccs930/ccs/tools/compiler/ti-cgt-msp430_18.12.4.LTS
+CG_TOOL_ROOT := C:/ti/ccsv8/tools/compiler/ti-cgt-msp430_16.9.11.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -14,6 +14,7 @@ ORDERED_OBJS += \
 "./ISRs.obj" \
 "./Init.obj" \
 "./SPI_API.obj" \
+"./bike.obj" \
 "./global.obj" \
 "./mdbu_global.obj" \
 "./USB_API/USB_CDC_API/UsbCdc.obj" \
@@ -67,7 +68,6 @@ ORDERED_OBJS += \
 "../USB_API/msp430USB.cmd" \
 "../USB_API/msp430USB.ld" \
 $(GEN_CMDS__FLAG) \
--llibmath.a \
 -llibc.a \
 
 -include ../makefile.init
@@ -194,12 +194,6 @@ DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.out \
 EXE_OUTPUTS__QUOTED += \
 "DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.out" \
 
-BIN_OUTPUTS += \
-DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.hex \
-
-BIN_OUTPUTS__QUOTED += \
-"DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.hex" \
-
 
 # All Target
 all: DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.out
@@ -208,23 +202,16 @@ all: DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.out
 DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.out: $(OBJS) $(CMD_SRCS) $(LD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: MSP430 Linker'
-	"C:/ti/ccs930/ccs/tools/compiler/ti-cgt-msp430_18.12.4.LTS/bin/cl430" -vmspx --data_model=restricted -O2 --use_hw_mpy=F5 --advice:power=all --define=__MSP430F5529__ --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU23 --silicon_errata=CPU40 -z -m"DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"C:/ti/ccs930/ccs/ccs_base/msp430/include" -i"C:/ti/ccs930/ccs/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"C:/ti/ccs930/ccs/tools/compiler/ti-cgt-msp430_18.12.4.LTS/lib" -i"C:/ti/ccs930/ccs/tools/compiler/ti-cgt-msp430_18.12.4.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv8/tools/compiler/ti-cgt-msp430_16.9.11.LTS/bin/cl430" -vmspx --abi=eabi -O2 --advice:power=all --define=__MSP430F5529__ --diag_warning=225 --display_error_number --diag_wrap=off --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU23 --silicon_errata=CPU40 --printf_support=minimal -z --stack_size=160 -m"DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.map" --heap_size=160 --use_hw_mpy=F5 -i"C:/ti/ccsv8/ccs_base/msp430/include" -i"C:/ti/ccsv8/tools/compiler/ti-cgt-msp430_16.9.11.LTS/lib" -i"C:/ti/ccsv8/tools/compiler/ti-cgt-msp430_16.9.11.LTS/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC_linkInfo.xml" --rom_model -o "DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
-	@echo ' '
-
-DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.hex: $(EXE_OUTPUTS)
-	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
-	@echo 'Invoking: MSP430 Hex Utility'
-	"C:/ti/ccs930/ccs/tools/compiler/ti-cgt-msp430_18.12.4.LTS/bin/hex430" --memwidth=8 --romwidth=8 -o "DRV835X_MSP430F5529_Trapezoidal_Sensored_BLDC.hex" $(EXE_OUTPUTS__QUOTED)
-	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "DRV83xx_MSP430F5529_trap_sensored_main.obj" "ISRs.obj" "Init.obj" "SPI_API.obj" "global.obj" "mdbu_global.obj" "USB_API\USB_CDC_API\UsbCdc.obj" "USB_API\USB_Common\usb.obj" "USB_API\USB_Common\usbdma.obj" "USB_app\usbConstructs.obj" "USB_app\usbEventHandling.obj" "USB_config\UsbIsr.obj" "USB_config\descriptors.obj" "driverlib\MSP430F5xx_6xx\adc10_a.obj" "driverlib\MSP430F5xx_6xx\adc12_a.obj" "driverlib\MSP430F5xx_6xx\aes.obj" "driverlib\MSP430F5xx_6xx\battbak.obj" "driverlib\MSP430F5xx_6xx\comp_b.obj" "driverlib\MSP430F5xx_6xx\crc.obj" "driverlib\MSP430F5xx_6xx\dac12_a.obj" "driverlib\MSP430F5xx_6xx\dma.obj" "driverlib\MSP430F5xx_6xx\eusci_a_spi.obj" "driverlib\MSP430F5xx_6xx\eusci_a_uart.obj" "driverlib\MSP430F5xx_6xx\eusci_b_i2c.obj" "driverlib\MSP430F5xx_6xx\eusci_b_spi.obj" "driverlib\MSP430F5xx_6xx\flashctl.obj" "driverlib\MSP430F5xx_6xx\gpio.obj" "driverlib\MSP430F5xx_6xx\ldopwr.obj" "driverlib\MSP430F5xx_6xx\mpy32.obj" "driverlib\MSP430F5xx_6xx\pmap.obj" "driverlib\MSP430F5xx_6xx\pmm.obj" 
+	-$(RM) $(EXE_OUTPUTS__QUOTED)
+	-$(RM) "DRV83xx_MSP430F5529_trap_sensored_main.obj" "ISRs.obj" "Init.obj" "SPI_API.obj" "bike.obj" "global.obj" "mdbu_global.obj" "USB_API\USB_CDC_API\UsbCdc.obj" "USB_API\USB_Common\usb.obj" "USB_API\USB_Common\usbdma.obj" "USB_app\usbConstructs.obj" "USB_app\usbEventHandling.obj" "USB_config\UsbIsr.obj" "USB_config\descriptors.obj" "driverlib\MSP430F5xx_6xx\adc10_a.obj" "driverlib\MSP430F5xx_6xx\adc12_a.obj" "driverlib\MSP430F5xx_6xx\aes.obj" "driverlib\MSP430F5xx_6xx\battbak.obj" "driverlib\MSP430F5xx_6xx\comp_b.obj" "driverlib\MSP430F5xx_6xx\crc.obj" "driverlib\MSP430F5xx_6xx\dac12_a.obj" "driverlib\MSP430F5xx_6xx\dma.obj" "driverlib\MSP430F5xx_6xx\eusci_a_spi.obj" "driverlib\MSP430F5xx_6xx\eusci_a_uart.obj" "driverlib\MSP430F5xx_6xx\eusci_b_i2c.obj" "driverlib\MSP430F5xx_6xx\eusci_b_spi.obj" "driverlib\MSP430F5xx_6xx\flashctl.obj" "driverlib\MSP430F5xx_6xx\gpio.obj" "driverlib\MSP430F5xx_6xx\ldopwr.obj" "driverlib\MSP430F5xx_6xx\mpy32.obj" "driverlib\MSP430F5xx_6xx\pmap.obj" "driverlib\MSP430F5xx_6xx\pmm.obj" 
 	-$(RM) "driverlib\MSP430F5xx_6xx\ram.obj" "driverlib\MSP430F5xx_6xx\ref.obj" "driverlib\MSP430F5xx_6xx\rtc_a.obj" "driverlib\MSP430F5xx_6xx\rtc_b.obj" "driverlib\MSP430F5xx_6xx\rtc_c.obj" "driverlib\MSP430F5xx_6xx\sd24_b.obj" "driverlib\MSP430F5xx_6xx\sfr.obj" "driverlib\MSP430F5xx_6xx\sysctl.obj" "driverlib\MSP430F5xx_6xx\tec.obj" "driverlib\MSP430F5xx_6xx\timer_a.obj" "driverlib\MSP430F5xx_6xx\timer_b.obj" "driverlib\MSP430F5xx_6xx\timer_d.obj" "driverlib\MSP430F5xx_6xx\tlv.obj" "driverlib\MSP430F5xx_6xx\ucs.obj" "driverlib\MSP430F5xx_6xx\usci_a_spi.obj" "driverlib\MSP430F5xx_6xx\usci_a_uart.obj" "driverlib\MSP430F5xx_6xx\usci_b_i2c.obj" "driverlib\MSP430F5xx_6xx\usci_b_spi.obj" "driverlib\MSP430F5xx_6xx\wdt_a.obj" "mdbuserial\source\mdbuserial.obj" "mdbuserial\source\mdbuserial_buffer.obj" "mdbuserial\source\mdbuserial_protocol.obj" 
-	-$(RM) "DRV83xx_MSP430F5529_trap_sensored_main.d" "ISRs.d" "Init.d" "SPI_API.d" "global.d" "mdbu_global.d" "USB_API\USB_CDC_API\UsbCdc.d" "USB_API\USB_Common\usb.d" "USB_API\USB_Common\usbdma.d" "USB_app\usbConstructs.d" "USB_app\usbEventHandling.d" "USB_config\UsbIsr.d" "USB_config\descriptors.d" "driverlib\MSP430F5xx_6xx\adc10_a.d" "driverlib\MSP430F5xx_6xx\adc12_a.d" "driverlib\MSP430F5xx_6xx\aes.d" "driverlib\MSP430F5xx_6xx\battbak.d" "driverlib\MSP430F5xx_6xx\comp_b.d" "driverlib\MSP430F5xx_6xx\crc.d" "driverlib\MSP430F5xx_6xx\dac12_a.d" "driverlib\MSP430F5xx_6xx\dma.d" "driverlib\MSP430F5xx_6xx\eusci_a_spi.d" "driverlib\MSP430F5xx_6xx\eusci_a_uart.d" "driverlib\MSP430F5xx_6xx\eusci_b_i2c.d" "driverlib\MSP430F5xx_6xx\eusci_b_spi.d" "driverlib\MSP430F5xx_6xx\flashctl.d" "driverlib\MSP430F5xx_6xx\gpio.d" "driverlib\MSP430F5xx_6xx\ldopwr.d" "driverlib\MSP430F5xx_6xx\mpy32.d" "driverlib\MSP430F5xx_6xx\pmap.d" "driverlib\MSP430F5xx_6xx\pmm.d" "driverlib\MSP430F5xx_6xx\ram.d" "driverlib\MSP430F5xx_6xx\ref.d" 
+	-$(RM) "DRV83xx_MSP430F5529_trap_sensored_main.d" "ISRs.d" "Init.d" "SPI_API.d" "bike.d" "global.d" "mdbu_global.d" "USB_API\USB_CDC_API\UsbCdc.d" "USB_API\USB_Common\usb.d" "USB_API\USB_Common\usbdma.d" "USB_app\usbConstructs.d" "USB_app\usbEventHandling.d" "USB_config\UsbIsr.d" "USB_config\descriptors.d" "driverlib\MSP430F5xx_6xx\adc10_a.d" "driverlib\MSP430F5xx_6xx\adc12_a.d" "driverlib\MSP430F5xx_6xx\aes.d" "driverlib\MSP430F5xx_6xx\battbak.d" "driverlib\MSP430F5xx_6xx\comp_b.d" "driverlib\MSP430F5xx_6xx\crc.d" "driverlib\MSP430F5xx_6xx\dac12_a.d" "driverlib\MSP430F5xx_6xx\dma.d" "driverlib\MSP430F5xx_6xx\eusci_a_spi.d" "driverlib\MSP430F5xx_6xx\eusci_a_uart.d" "driverlib\MSP430F5xx_6xx\eusci_b_i2c.d" "driverlib\MSP430F5xx_6xx\eusci_b_spi.d" "driverlib\MSP430F5xx_6xx\flashctl.d" "driverlib\MSP430F5xx_6xx\gpio.d" "driverlib\MSP430F5xx_6xx\ldopwr.d" "driverlib\MSP430F5xx_6xx\mpy32.d" "driverlib\MSP430F5xx_6xx\pmap.d" "driverlib\MSP430F5xx_6xx\pmm.d" "driverlib\MSP430F5xx_6xx\ram.d" "driverlib\MSP430F5xx_6xx\ref.d" 
 	-$(RM) "driverlib\MSP430F5xx_6xx\rtc_a.d" "driverlib\MSP430F5xx_6xx\rtc_b.d" "driverlib\MSP430F5xx_6xx\rtc_c.d" "driverlib\MSP430F5xx_6xx\sd24_b.d" "driverlib\MSP430F5xx_6xx\sfr.d" "driverlib\MSP430F5xx_6xx\sysctl.d" "driverlib\MSP430F5xx_6xx\tec.d" "driverlib\MSP430F5xx_6xx\timer_a.d" "driverlib\MSP430F5xx_6xx\timer_b.d" "driverlib\MSP430F5xx_6xx\timer_d.d" "driverlib\MSP430F5xx_6xx\tlv.d" "driverlib\MSP430F5xx_6xx\ucs.d" "driverlib\MSP430F5xx_6xx\usci_a_spi.d" "driverlib\MSP430F5xx_6xx\usci_a_uart.d" "driverlib\MSP430F5xx_6xx\usci_b_i2c.d" "driverlib\MSP430F5xx_6xx\usci_b_spi.d" "driverlib\MSP430F5xx_6xx\wdt_a.d" "mdbuserial\source\mdbuserial.d" "mdbuserial\source\mdbuserial_buffer.d" "mdbuserial\source\mdbuserial_protocol.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

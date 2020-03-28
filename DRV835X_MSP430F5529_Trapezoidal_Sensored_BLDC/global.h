@@ -137,12 +137,6 @@ typedef enum
 
 } FAULTS;
 
-typedef struct BIKE_STATUS
-{
-    BIKE_STATE current;
-    BIKE_STATE previous;
-} BIKE_STATUS;
-
 typedef enum
 {
     BIKE_INIT = 0,
@@ -151,6 +145,12 @@ typedef enum
     ACCELERATING = 3,
     REGENERATING = 4
 } BIKE_STATE;
+
+typedef struct BIKE_STATUS
+{
+    BIKE_STATE current;
+    BIKE_STATE previous;
+} BIKE_STATUS;
 
 typedef struct APPLICATION_STATUS
 {

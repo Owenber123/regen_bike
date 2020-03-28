@@ -13,6 +13,7 @@ C_SRCS += \
 ../ISRs.c \
 ../Init.c \
 ../SPI_API.c \
+../bike.c \
 ../global.c \
 ../mdbu_global.c 
 
@@ -21,6 +22,7 @@ C_DEPS += \
 ./ISRs.d \
 ./Init.d \
 ./SPI_API.d \
+./bike.d \
 ./global.d \
 ./mdbu_global.d 
 
@@ -29,6 +31,7 @@ OBJS += \
 ./ISRs.obj \
 ./Init.obj \
 ./SPI_API.obj \
+./bike.obj \
 ./global.obj \
 ./mdbu_global.obj 
 
@@ -37,6 +40,7 @@ OBJS__QUOTED += \
 "ISRs.obj" \
 "Init.obj" \
 "SPI_API.obj" \
+"bike.obj" \
 "global.obj" \
 "mdbu_global.obj" 
 
@@ -45,6 +49,7 @@ C_DEPS__QUOTED += \
 "ISRs.d" \
 "Init.d" \
 "SPI_API.d" \
+"bike.d" \
 "global.d" \
 "mdbu_global.d" 
 
@@ -53,6 +58,7 @@ C_SRCS__QUOTED += \
 "../ISRs.c" \
 "../Init.c" \
 "../SPI_API.c" \
+"../bike.c" \
 "../global.c" \
 "../mdbu_global.c" 
 

@@ -390,7 +390,7 @@ void UART0_Init(void)
     params->selectClockSource = USCI_A_UART_CLOCKSOURCE_SMCLK;
     params->overSampling = USCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION;
 
-    USCI_A_UART_init(USCI_A0_OFFSET, params);
+    //USCI_A_UART_init(USCI_A0_OFFSET, params);
 }
 
 
