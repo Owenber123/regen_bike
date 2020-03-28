@@ -354,38 +354,45 @@ BikeController_StateMachine(void)
     switch(Bike_Status.current)
     {
         case SYSTEM_INIT:
-	    bike_init();			// Initialize UART/THROTTLE/BREAK
+            bike_init();			// Initialize UART/THROTTLE/BREAK
             Bike_Status.current = BIKE_IDLE;		// Move to next state
-	    Bike_Status.previous = SYSTEM_INIT;
+            Bike_Status.previous = BIKE_INIT;
             break;
+
         case SYSTEM_IDLE:
             // This state should be used to save power.  If the bike is in idle we are waiting for an interrupt
-	    // Because Bike_Status cannot be set in an interrupt we must check if an interrupt has occured
-	    if (1) // ("break interrupt" or "throttle interrupt")
-		Bike_Status.previous = SYSTEM_IDLE;
-	    	Bike_Status.current = ACCELERATING;
+            // Because Bike_Status cannot be set in an interrupt we must check if an interrupt has occured
+            if (1) // ("break interrupt" or "throttle interrupt")
+                Bike_Status.previous = BIKE_INIT;
+                Bike_Status.current = ACCELERATING;
             break;
+
         case SWITCHING:
-	    // Precautions must be taken during the switching between accelerating and regenerating.
-	    // Must deactive gates and ...
-	    if (Bike_Status.previous == ACCELERATING)
-		Bike_Status.current = REGENERATING;
-	    Bike_Status.previous = SWITCHING;
-	    break;
+            // Precautions must be taken during the switching between accelerating and regenerating.
+            // Must deactive gates and ...
+            if (Bike_Status.previous == ACCELERATING)
+                Bike_Status.current = REGENERATING;
+            else
+                Bike_Status.current = ACCELERATING;
+            Bike_Status.previous = SWITCHING;
+            break;
+
         case ACCELERATING:
             // ????  drv83xx_regRestoreFromCache();
             ReadPotiSpeed();
-	    // update_speed();
-	    if (0) // ("break interrupt")
-		//Bike_Status.previous = ACCELERATING;
-		Bike_Status.current = SWITCHING;
+            // update_speed();
+            if (0) // ("break interrupt")
+                //Bike_Status.previous = ACCELERATING;
+            Bike_Status.current = SWITCHING;
             break;
         case REGENERATING:
             // Set Mode to 6 PWM
             //Bike_Status = BIKE_IDLE;
-	    if (0) // ("throttle interrupt"
-		Bike_Status.previous = REGENERATING;
-		Bike_Status.current = SWITCHING;
+            if (0) // ("throttle interrupt"
+            {
+                Bike_Status.previous = REGENERATING;
+                Bike_Status.current = SWITCHING;
+            }
             break;
     }
 

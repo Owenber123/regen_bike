@@ -1,9 +1,5 @@
 #include "bike.h"
 
-
-
-
-
 void bike_init(void)
 {
     drv83xx_setGPIO(0x01, EN_DRV, 1);
@@ -13,12 +9,13 @@ void bike_init(void)
 
 void update_speed(void)
 {
-    extern SENSORED_TRAP_Obj sensoredTrapController;
+
+    //extern SENSORED_TRAP_Obj sensoredTrapController;
 
 	// Get Value from GPIO pin
 	// Calculte speed from that ADC value
 	// Set the PWM Duty Cycle
-	sensoredTrapController.TargetDutyCycle = 500;
+	//sensoredTrapController.TargetDutyCycle = 500;
 }
 
 void send_handle_bar()
