@@ -91,6 +91,7 @@ void SetPWMDutyCycle(uint16_t PWMDutyCycle)
     TA2CCR1 = PWMDutyCycle;
     TA2CCR2 = PWMDutyCycle;
 }
+
 void UpdateNextCommutation()
 {
 

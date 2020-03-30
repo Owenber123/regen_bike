@@ -349,7 +349,7 @@ void DRV8x_StateMachine(void)
  * BikeController_StateMachine(void)
  * Handles the Bike state machine
  * */
-BikeController_StateMachine(void)
+void BikeController_StateMachine(void)
 {
     switch(Bike_Status.current)
     {
@@ -380,10 +380,13 @@ BikeController_StateMachine(void)
         case ACCELERATING:
             // ????  drv83xx_regRestoreFromCache();
             ReadPotiSpeed();
+
             // update_speed();
             if (0) // ("break interrupt")
-                //Bike_Status.previous = ACCELERATING;
-            Bike_Status.current = SWITCHING;
+            {
+                Bike_Status.previous = ACCELERATING;
+                Bike_Status.current = SWITCHING;
+            }
             break;
         case REGENERATING:
             // Set Mode to 6 PWM

@@ -208,7 +208,7 @@ void ADC_Init(void)
     ADC12CTL0 = ADC12ON + ADC12MSC + ADC12SHT0_0;       // Turn on ADC12, extend sampling time
                                                         // to avoid overflow of results
     ADC12CTL1 = ADC12SHP + ADC12CONSEQ_1;               // Use sampling timer, Single sequence
-    ADC12MCTL0 = ADC12INCH_6;                           // ref+=AVcc, channel = A6 (Read the Pot for sensing speed input) // P6.5 connected to 0-3.3V supply
+    ADC12MCTL0 = ADC12INCH_14;                           // ref+=AVcc, channel = A6 (Read the Pot for sensing speed input) // P6.5 connected to 0-3.3V supply
     ADC12MCTL1 = ADC12INCH_5;                           // ref+=AVcc, channel = A5 (Read the Vcc Voltage from drv83xxX )
     ADC12MCTL2 = ADC12INCH_12 + ADC12EOS;               // ref+=AVcc, channel = A12 (Read the Current Shunt amplifier reading from Phase A ) , End of Sequence
     ADC12CTL0 |= ADC12ENC;                              // Enable conversions
