@@ -500,7 +500,7 @@ void main()
     while(1)
     {
         DRV8x_StateMachine();                       	 /* call background state machine */
-        BikeController_StateMachine();
-        // HostController_StateMachine();
+        //BikeController_StateMachine();
+        HostController_StateMachine();
     }
 }
